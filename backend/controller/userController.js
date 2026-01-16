@@ -57,15 +57,15 @@ export const login = async(req, res) => {
             httpOnly : true,
             sameSite : 'lax',
             secure : false,
-            maxAge : 15*60*1000
+            maxAge : 10*60*1000
         })
-        .cookie("refreshCookie", refreshToken,{
+        .cookie("refreshToken", refreshToken,{
             httpOnly : true,
             sameSite : 'lax',
             secure : false,
             maxAge : 7*24*60*60*1000
         })
-        .json({message : 'Login Successful',accessToken});
+        .json({message : 'Login Successful'});
 
 
 

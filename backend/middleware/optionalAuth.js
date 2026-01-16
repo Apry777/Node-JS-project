@@ -6,7 +6,7 @@ const optionalAuth = (req, res, next) => {
     const token = req.cookies.accessToken;
     if(token){
         try{
-            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            const decoded = jwt.verify(token, process.env.ACCESS_SECRET);
             //req.user = jwt.verify(token, process.env.ACCESS_SECRET);
             console.log('DECODED TOKEN:', decoded);
             req.user = decoded;

@@ -1,4 +1,5 @@
 import express from 'express';
+import jwt from 'jsonwebtoken';
 
 
 const router = express.Router();
@@ -8,26 +9,26 @@ export const refreshPage = async(req, res) => {
         const token = req.cookies.refreshToken;
 
         if(!token){
-            return res.status(404).json({ message : 'Token not found'});
+            return res.status(404).json({ message : 'Refresh Token not found'});
         }
-        const user = jwt.verify(token, process.env.REFRESH_SECRET);
+        const decoded = jwt.verify(token, process.env.REFRESH_SECRET);
         const newAccessToken = jwt.sign(
-            {userId : user.userId},
+            {userId : decoded.userId},
             process.env.ACCESS_SECRET,
-            {expiresIn : '15m'}
+            {expiresIn : '10m'}
         );
 
         res.cookie('accessToken', newAccessToken,{
             httpOnly : true,
             sameSite : 'lax',
             secure : false,
-            maxAge : 15 * 60 * 1000
+            maxAge : 10 * 60 * 1000
         });
 
-        res.status(200).json({ message : 'Token Refreshed'});
+        return res.status(200).json({ message : 'Token Refreshed'});
 
     }catch(err){
-        res.status(403).json({ message : 'Invalid Token'});
+        return res.status(403).json({ message : 'Invalid Token'});
     }
 }
 
